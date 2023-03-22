@@ -1,38 +1,26 @@
-"use-strict";
+const { Sequelize, DataTypes } = require("sequelize");
+const { DB_INFO } = require("../config");
+const config = DB_INFO.development;
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  { dialect: config.dialect }
+);
 
-const config = require("../config/db.config");
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-  host: config.HOST,
-  dialect: config.dialect,
-  operatorsAliases: false,
-  pool: {
-    max: config.pool.max,
-    min: config.pool.min,
-    acquire: config.pool.acquire,
-    idle: config.pool.idle,
-  },
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Database is connected!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const db = {};
-
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("../models/user")(sequelize, Sequelize);
-db.role = require("../models/role")(sequelize, Sequelize);
+db.users = require("./user.model")(sequelize, DataTypes);
 
-db.role.belongsToMany(db.user, {
-  through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId",
-});
-
-db.user.belongsToMany(db.role, {
-  through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId",
-});
-
-db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;
