@@ -27,7 +27,9 @@ db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and Resync database");
   initial();
 });
-
+//routes
+require("./src/routes/auth")(app);
+require("./src/routes/user")(app);
 //to enable CORS
 var corsOptions = {
   origin: "http://localhost:8081",
