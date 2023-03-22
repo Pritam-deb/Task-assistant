@@ -30,7 +30,14 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const user = User.findOne({ where: { username } });
+
+    // await User.findOne({ where: { username: "broly" } }).then((data) => {
+    //   console.log(`DATA is ===> ${data}`);
+    // });
+    const x = await User.findAll();
+    console.log(`USERNAME is ===> ${x}`);
+
+    const user = await User.findOne({ where: { username: username } });
     if (user) {
       const isSame = await bcrypt.compare(password, user.password);
       if (isSame) {
@@ -40,10 +47,12 @@ const signIn = async (req, res) => {
         console.log(token);
         return res.status(201).send(user);
       } else {
-        return res.status(401).send("Authentication failed");
+        return res.status(401).send("Authentication failed! wrong password");
       }
     } else {
-      return res.status(401).send("Authentication failed");
+      return res
+        .status(401)
+        .send("Authentication failed as username not found");
     }
   } catch (error) {
     console.log(error);
