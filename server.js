@@ -2,8 +2,31 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+const db = require("./database/models");
+const Role = db.role;
 
 const PORT = 8000;
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user",
+  });
+
+  Role.create({
+    id: 2,
+    name: "moderator",
+  });
+
+  Role.create({
+    id: 3,
+    name: "admin",
+  });
+}
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and Resync database");
+  initial();
+});
 
 //to enable CORS
 var corsOptions = {
