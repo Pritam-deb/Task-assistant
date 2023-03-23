@@ -1,5 +1,5 @@
 const express = require("express");
-const sequelize = require("sequelize");
+
 const cookieParser = require("cookie-parser");
 const db = require("./database/models");
 const userRoutes = require("./src/routes/auth");
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("DB has been resynced!");
 });
 
