@@ -41,11 +41,15 @@ const signIn = async (req, res) => {
     if (user) {
       const isSame = await bcrypt.compare(password, user.password);
       if (isSame) {
-        let token = accessToken(user.uuid); //used data.uuid instead of user.id
+        let token = accessToken(user.uuid); //used user.uuid instead of user.id
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+
+        console.log(`THE HEADER IS${req.cookies.jwt} TILL HERE`);
+
         console.log("user", JSON.stringify(user, null, 2));
         console.log(token);
-        return res.status(201).send(user);
+        // return res.status(201).send(user);
+        return res.json({ token });
       } else {
         return res.status(401).send("Authentication failed! wrong password");
       }

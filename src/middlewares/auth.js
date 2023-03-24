@@ -1,5 +1,7 @@
 const express = require("express");
 const db = require("../../database/models");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../../database/config");
 
 const User = db.users;
 
@@ -20,4 +22,37 @@ const saveUser = async (request, response, next) => {
   }
 };
 
-module.exports = { saveUser };
+const requireAuth = async (request, response, next) => {
+  const token = request.cookies.jwt;
+  console.log(`TOKEN IS ${token}`);
+
+  if (token) {
+    await jwt.verify(token, JWT_SECRET, (error, payload) => {
+      if (error) {
+        return response
+          .status(403)
+          .json({ error: "You must be logged in! wrong token" });
+      } else {
+        console.log(payload);
+        const { _id } = payload;
+        console.log(`THE UUID OF THE LOGGED USER IS ==> ${_id}`);
+        User.findOne({ where: { uuid: _id } }).then((userData) => {
+          const currentUser = {
+            uuid: userData.dataValues.uuid,
+            username: userData.dataValues.username,
+            password: userData.dataValues.password,
+          };
+          request.user = currentUser;
+          console.log(`NAME IS ${currentUser.username}`);
+          next();
+        });
+      }
+    });
+  } else {
+    return response
+      .status(403)
+      .json({ error: "You must be logged in! token empty" });
+  }
+};
+
+module.exports = { saveUser, requireAuth };

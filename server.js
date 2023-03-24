@@ -3,6 +3,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const db = require("./database/models");
 const userRoutes = require("./src/routes/auth");
+const protectedRoutes = require("./src/routes/protectedRoutes");
+const { requireAuth } = require("./src/middlewares/auth");
 
 const app = express();
 
@@ -18,6 +20,7 @@ db.sequelize.sync({ force: false }).then(() => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/todo", requireAuth, protectedRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "this is a node postgres JWT auth API" });
