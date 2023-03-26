@@ -1,6 +1,12 @@
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "user",
+  class User extends Model {
+    static associate({ Todo }) {
+      this.hasMany(Todo, { foreignKey: "userId", as: "Todo" });
+    }
+  }
+  User.init(
     {
       uuid: {
         type: DataTypes.UUID,
@@ -18,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    { timestamps: true }
+    {
+      timestamps: true,
+      sequelize,
+      modelName: "user",
+    }
   );
   return User;
 };

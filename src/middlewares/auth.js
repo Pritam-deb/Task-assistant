@@ -35,7 +35,7 @@ const requireAuth = async (request, response, next) => {
       } else {
         console.log(payload);
         const { _id } = payload;
-        console.log(`THE UUID OF THE LOGGED USER IS ==> ${_id}`);
+
         User.findOne({ where: { uuid: _id } }).then((userData) => {
           const currentUser = {
             uuid: userData.dataValues.uuid,
@@ -43,7 +43,7 @@ const requireAuth = async (request, response, next) => {
             password: userData.dataValues.password,
           };
           request.user = currentUser;
-          console.log(`NAME IS ${currentUser.username}`);
+
           next();
         });
       }

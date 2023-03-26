@@ -22,5 +22,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.model")(sequelize, DataTypes);
+db.todos = require("./todo.model")(sequelize, DataTypes);
 
 module.exports = db;
