@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "pritamdebnath",
+    "password": null,
+    "database": "todo_app",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "pritamdebnath",
+    "password": null,
+    "database": "todo_app",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "pritamdebnath",
+    "password": null,
+    "database": "todo_app",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
