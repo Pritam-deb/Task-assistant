@@ -10,6 +10,6 @@ const {
 protectedRoutes.get("/", getTodo);
 protectedRoutes.post("/create", createTodo);
 protectedRoutes.delete("/delete/:uuid", deleteTodo);
-protectedRoutes.put("/:uuid", updateTodo);
+protectedRoutes.put("/update/:uuid", updateTodo);
 
 module.exports = protectedRoutes;
