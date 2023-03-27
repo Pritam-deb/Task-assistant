@@ -24,7 +24,6 @@ const saveUser = async (request, response, next) => {
 
 const requireAuth = async (request, response, next) => {
   const token = request.cookies.jwt;
-  console.log(`TOKEN IS ${token}`);
 
   if (token) {
     await jwt.verify(token, JWT_SECRET, (error, payload) => {
@@ -33,7 +32,6 @@ const requireAuth = async (request, response, next) => {
           .status(403)
           .json({ error: "You must be logged in! wrong token" });
       } else {
-        console.log(payload);
         const { _id } = payload;
 
         User.findOne({ where: { uuid: _id } }).then((userData) => {

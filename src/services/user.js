@@ -35,7 +35,6 @@ const signIn = async (req, res) => {
     //   console.log(`DATA is ===> ${data}`);
     // });
     const x = await User.findAll();
-    console.log(`USERNAME is ===> ${x}`);
 
     const user = await User.findOne({ where: { username: username } });
     if (user) {
@@ -44,10 +43,6 @@ const signIn = async (req, res) => {
         let token = accessToken(user.uuid); //used user.uuid instead of user.id
         res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
 
-        console.log(`THE HEADER IS${req.cookies.jwt} TILL HERE`);
-
-        console.log("user", JSON.stringify(user, null, 2));
-        console.log(token);
         // return res.status(201).send(user);
         return res.json({ token });
       } else {

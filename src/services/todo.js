@@ -18,7 +18,7 @@ const createTodo = async (request, response) => {
   if (!user) {
     return response.status(404).send({ message: "User not found" });
   }
-  console.log(`USER ID TO CREATE======>${userId}`);
+
   const newTodo = {
     title,
     isCompleted,
@@ -29,16 +29,20 @@ const createTodo = async (request, response) => {
     .then((data) => response.send(data))
     .catch((err) => response.status(400).send(err));
 };
-const deleteTodo = async (request, response) => {
-  const { uuid } = request.params;
 
-  const todo = await Todo.findOne({ where: { uuid } });
+const deleteTodo = async (request, response) => {
+  console.log("HERE IS DELETE!!!!");
+  const { uuid } = request.params;
+  console.log(`UUID TO DELETE==>${uuid}`);
+
+  const todo = await Todo.findOne({ where: { uuid: uuid } });
 
   await todo
     .destroy()
     .then(() => response.send("Todo deleted!"))
     .catch((err) => response.status(400).send(err));
 };
+
 const updateTodo = async (request, response) => {
   const { uuid } = request.params;
   const { isCompleted } = request.body;

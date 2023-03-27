@@ -19,6 +19,4 @@ const hashPassword = (password) =>
       console.log(err);
     });
 
-console.log(`ENCRYPTION WAS === ${pswd}`);
-
 module.exports = hashPassword;
