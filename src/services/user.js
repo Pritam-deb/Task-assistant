@@ -17,8 +17,7 @@ const signUp = async (req, res) => {
     await User.create(newUser)
       .then((data) => res.send(data))
       .catch((error) => {
-        res.status(400).send(err.errors[0]);
-        console.log(err);
+        res.status(400).send(error.errors[0]);
       });
 
     //omitted the part to create a JWT here, instead I will only do it while Signing in
@@ -40,8 +39,13 @@ const signIn = async (req, res) => {
     if (user) {
       const isSame = await bcrypt.compare(password, user.password);
       if (isSame) {
-        let token = accessToken(user.uuid); //used user.uuid instead of user.id
-        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+        let token = accessToken(user.uuid, user.username); //used user.uuid instead of user.id
+
+        res.cookie("jwt", token, {
+          serure: true,
+          expires: new Date(Date.now() + 3600000),
+          httpOnly: true,
+        });
 
         // return res.status(201).send(user);
         return res.json({ token });
