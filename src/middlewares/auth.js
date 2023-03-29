@@ -33,7 +33,8 @@ const requireAuth = async (request, response, next) => {
           .json({ error: "You must be logged in! wrong token" });
       } else {
         const { _id } = payload;
-
+        const { _name } = payload;
+        console.log(`USERID FROM JWT ${_name}`);
         User.findOne({ where: { uuid: _id } }).then((userData) => {
           const currentUser = {
             uuid: userData.dataValues.uuid,

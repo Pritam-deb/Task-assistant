@@ -6,8 +6,10 @@ const hashPswd = (password) => {
   return bcrypt.hash(password, 10);
 };
 
-const accessToken = (uuid) => {
-  return jwt.sign({ _id: uuid }, JWT_SECRET, { expiresIn: "60s" });
+const accessToken = (uuid, username) => {
+  return jwt.sign({ _id: uuid, _name: username }, JWT_SECRET, {
+    expiresIn: "1h",
+  });
 };
 
 module.exports = { hashPswd, accessToken };
