@@ -62,4 +62,6 @@ const signIn = async (req, res) => {
   }
 };
 
+//GOOGLE signin and signup
+
 module.exports = { signUp, signIn };
