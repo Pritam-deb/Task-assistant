@@ -6,6 +6,7 @@ const { JWT_SECRET } = require("../../database/config");
 const User = db.users;
 
 const saveUser = async (request, response, next) => {
+  //same user
   //searching DB for the user
   try {
     const newUserName = await User.findOne({

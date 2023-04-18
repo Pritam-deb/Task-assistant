@@ -5,7 +5,7 @@ const { hashPswd, accessToken } = require("../utils");
 const { JWT_SECRET } = require("../../database/config");
 
 const User = db.users;
-
+//TRY USING ROLE BASED AUTHENTICATION
 const signUp = async (req, res) => {
   try {
     const { username, password } = req.body;
