@@ -23,5 +23,9 @@ db.sequelize = sequelize;
 
 db.users = require("./user.model")(sequelize, DataTypes);
 db.todos = require("./todo.model")(sequelize, DataTypes);
+db.federated_credentials = require("./federated_credentials")(
+  sequelize,
+  DataTypes
+);
 
 module.exports = db;
