@@ -3,6 +3,7 @@ const { requireAuth } = require("../middlewares/auth");
 
 const protectedRoutes = require("./protectedRoutes");
 const authRoutes = require("./auth");
+const googleRoutes = require("./googleAuth");
 const router = express.Router();
 
 const routes = (app) => {
@@ -11,6 +12,7 @@ const routes = (app) => {
   });
   app.use("/", router);
 };
+router.use("/api", googleRoutes);
 router.use("/api", authRoutes);
 router.use("/api", requireAuth, protectedRoutes);
 
