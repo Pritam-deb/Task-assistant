@@ -5,7 +5,13 @@ const protectedRoutes = require("./protectedRoutes");
 const authRoutes = require("./auth");
 const router = express.Router();
 
-router.use("/", authRoutes);
-router.use("/", requireAuth, protectedRoutes);
+const routes = (app) => {
+  router.get("/", (req, res) => {
+    res.json({ message: "this is a node postgres JWT auth API" });
+  });
+  app.use("/", router);
+};
+router.use("/api", authRoutes);
+router.use("/api", requireAuth, protectedRoutes);
 
-module.exports = router;
+module.exports = routes;

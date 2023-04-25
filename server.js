@@ -6,6 +6,7 @@ const userRoutes = require("./src/routes/auth");
 const protectedRoutes = require("./src/routes/protectedRoutes");
 const googleAuthRouter = require("./src/routes/googleAuth");
 const { requireAuth } = require("./src/middlewares/auth");
+const router = require("./src/routes");
 
 const app = express();
 
@@ -22,14 +23,7 @@ app.set("view engine", "ejs");
 db.sequelize.sync({ force: false }).then(() => {
   console.log("DB has been resynced!");
 });
-
-app.use("/api/google", googleAuthRouter);
-app.use("/api/users", userRoutes);
-app.use("/api/todo", requireAuth, protectedRoutes);
-
-app.get("/", (req, res) => {
-  res.json({ message: "this is a node postgres JWT auth API" });
-});
+router(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
