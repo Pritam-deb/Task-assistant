@@ -27,5 +27,6 @@ db.federated_credentials = require("./federated_credentials")(
   sequelize,
   DataTypes
 );
+db.sessions = require("./sessions.model")(sequelize, DataTypes);
 
 module.exports = db;
