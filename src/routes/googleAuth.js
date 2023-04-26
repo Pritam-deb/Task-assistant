@@ -21,6 +21,7 @@ router.get(
 );
 
 passport.serializeUser(function (user, cb) {
+  console.log(`USER IN COOKIE========>`, user);
   process.nextTick(function () {
     cb(null, { uuid: user.id, username: user.username, name: user.name });
   });
@@ -65,7 +66,7 @@ passport.use(
 
           // Create a user object to be returned to Passport
           const user = {
-            id: newUser.id,
+            id: newUser.uuid,
             name: newUser.name,
           };
 
@@ -78,7 +79,7 @@ passport.use(
 
           // Create a user object to be returned to Passport
           const user = {
-            id: existingUser.id,
+            id: existingUser.uuid,
             name: existingUser.name,
           };
 

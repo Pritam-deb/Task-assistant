@@ -23,6 +23,8 @@ const saveUser = async (request, response, next) => {
   }
 };
 
+const requireGoogleAuth = async (req, res, next) => {};
+
 const requireAuth = async (request, response, next) => {
   const token = request.cookies.jwt;
 
@@ -55,4 +57,4 @@ const requireAuth = async (request, response, next) => {
   }
 };
 
-module.exports = { saveUser, requireAuth };
+module.exports = { saveUser, requireAuth, requireGoogleAuth };
