@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      dueDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,

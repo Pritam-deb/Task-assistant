@@ -11,7 +11,11 @@ const getTodo = async (request, response) => {
 };
 
 const createTodo = async (request, response) => {
-  const { title, isCompleted } = request.body;
+  var { title, isCompleted, dueDate } = request.body;
+  const [day, month, year] = dueDate.split("-");
+  const dateObj = new Date(`20${year}`, month - 1, day);
+  const isoDate = dateObj.toISOString();
+  dueDate = new Date(isoDate);
   const userId = request.user.uuid;
   const user = await User.findOne({ where: { uuid: userId } });
   if (!user) {
@@ -21,6 +25,7 @@ const createTodo = async (request, response) => {
     title,
     isCompleted,
     userId,
+    dueDate,
   };
   await Todo.create(newTodo)
     .then((data) => response.send(data))
