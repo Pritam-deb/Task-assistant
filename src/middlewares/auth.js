@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../../database/config");
 
 const User = db.users;
+const Session = db.sessions;
 
 const saveUser = async (request, response, next) => {
   //same user
@@ -23,7 +24,27 @@ const saveUser = async (request, response, next) => {
   }
 };
 
-const requireGoogleAuth = async (req, res, next) => {};
+const requireGoogleAuth = async (request, response, next) => {
+  const currentUser = await Session.findAll({
+    attributes: ["data"],
+  });
+  console.log(`CURRENT USER`, currentUser);
+  if (currentUser) {
+    const userData = currentUser[0].dataValues;
+    const parsedData = JSON.parse(userData.data);
+    // console.log(`USER COOKIE===`, parsedData.passport.user.uuid);
+    const googleUser = {
+      uuid: parsedData.passport.user.uuid,
+      username: parsedData.passport.user.name,
+    };
+    request.user = googleUser;
+  } else {
+    return response
+      .status(403)
+      .json({ error: "You must be signedIn with google!" });
+  }
+  next();
+};
 
 const requireAuth = async (request, response, next) => {
   const token = request.cookies.jwt;

@@ -1,5 +1,5 @@
 const express = require("express");
-const { requireAuth } = require("../middlewares/auth");
+const { requireAuth, requireGoogleAuth } = require("../middlewares/auth");
 
 const protectedRoutes = require("./protectedRoutes");
 const authRoutes = require("./auth");
@@ -14,6 +14,6 @@ const routes = (app) => {
 };
 router.use("/api", googleRoutes);
 router.use("/api", authRoutes);
-router.use("/api", requireAuth, protectedRoutes);
+router.use("/api", requireGoogleAuth, protectedRoutes);
 
 module.exports = routes;

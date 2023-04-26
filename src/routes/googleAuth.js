@@ -21,7 +21,7 @@ router.get(
 );
 
 passport.serializeUser(function (user, cb) {
-  console.log(`USER IN COOKIE========>`, user);
+  // console.log(`USER IN COOKIE========>`, user);
   process.nextTick(function () {
     cb(null, { uuid: user.id, username: user.username, name: user.name });
   });
@@ -52,14 +52,14 @@ passport.use(
         if (!existingCredential) {
           // If not, create a new user and federated credential
           const newUser = await User.create({ name: profile.displayName });
-          console.log(`NEW USER IS ===> `, newUser.uuid);
+          // console.log(`NEW USER IS ===> `, newUser.uuid);
           try {
             const newCredential = await FederatedCredential.create({
               user_id: newUser.uuid,
               provider: issuer,
               subject: profile.id,
             });
-            console.log(`NEW FED IS ===> `, newCredential);
+            // console.log(`NEW FED IS ===> `, newCredential);
           } catch (error) {
             console.log(error);
           }
