@@ -21,7 +21,6 @@ router.get(
 );
 
 passport.serializeUser(function (user, cb) {
-  // console.log(`USER IN COOKIE========>`, user);
   process.nextTick(function () {
     cb(null, { uuid: user.id, username: user.username, name: user.name });
   });
@@ -59,7 +58,6 @@ passport.use(
               provider: issuer,
               subject: profile.id,
             });
-            // console.log(`NEW FED IS ===> `, newCredential);
           } catch (error) {
             console.log(error);
           }

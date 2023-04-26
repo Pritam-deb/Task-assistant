@@ -1,5 +1,5 @@
 const express = require("express");
-const { requireAuth, requireGoogleAuth } = require("../middlewares/auth");
+const { requireGoogleAuth } = require("../middlewares/auth");
 
 const protectedRoutes = require("./protectedRoutes");
 const authRoutes = require("./auth");

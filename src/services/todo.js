@@ -5,7 +5,6 @@ const Todo = db.todos;
 
 const getTodo = async (request, response) => {
   const userId = request.user.uuid;
-  console.log(`USER IN GET TODO====`, request.user.uuid);
   await Todo.findAll({ where: { userId } })
     .then((data) => response.send(data))
     .catch((err) => response.status(400).send(err));
@@ -13,10 +12,6 @@ const getTodo = async (request, response) => {
 
 const createTodo = async (request, response) => {
   const { title, isCompleted } = request.body;
-  console.log(`TITLE === `, title);
-  console.log(`COMPLETE === `, isCompleted);
-  console.log(`USER IN CREATE TODO====`, request.user.uuid);
-
   const userId = request.user.uuid;
   const user = await User.findOne({ where: { uuid: userId } });
   if (!user) {
