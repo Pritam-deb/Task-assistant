@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       provider: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: false,
       },
       subject: {
         type: DataTypes.STRING,

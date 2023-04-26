@@ -52,12 +52,16 @@ passport.use(
           // If not, create a new user and federated credential
           const newUser = await User.create({ name: profile.displayName });
           console.log(`NEW USER IS ===> `, newUser.uuid);
-          const newCredential = await FederatedCredential.create({
-            user_id: newUser.uuid,
-            provider: issuer,
-            subject: profile.id,
-          });
-          console.log(`NEW FED IS ===> `, newCredential);
+          try {
+            const newCredential = await FederatedCredential.create({
+              user_id: newUser.uuid,
+              provider: issuer,
+              subject: profile.id,
+            });
+            console.log(`NEW FED IS ===> `, newCredential);
+          } catch (error) {
+            console.log(error);
+          }
 
           // Create a user object to be returned to Passport
           const user = {
