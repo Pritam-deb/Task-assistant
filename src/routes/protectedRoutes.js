@@ -7,7 +7,7 @@ const {
   updateTodo,
 } = require("../services/todo");
 
-protectedRoutes.get("/", getTodo);
+protectedRoutes.get("/todos", getTodo);
 protectedRoutes.post("/create", createTodo);
 protectedRoutes.delete("/delete/:uuid", deleteTodo);
 protectedRoutes.put("/update/:uuid", updateTodo);

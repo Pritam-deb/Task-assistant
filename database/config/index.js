@@ -1,13 +1,13 @@
 require("dotenv").config();
 
 module.exports = {
-  JWT_SECRET: process.env.JWT_SECRET,
-  JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+  JWT_SECRET: "0P3NL3TTER",
+  JWT_REFRESH_SECRET: "HJE5678THUG834567THJG84576TEHJGT",
   DB_INFO: {
     development: {
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_DATABASE,
+      username: "pritamdebnath",
+      password: "",
+      database: "todo_app",
       host: "localhost",
       dialect: "postgres",
     },
