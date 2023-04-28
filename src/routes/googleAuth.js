@@ -39,10 +39,11 @@ passport.use(
         "523872834988-66fnc3ni5j6bhuff8rf88kad2f3e5spj.apps.googleusercontent.com",
       clientSecret: "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",
       callbackURL: "/api/oauth2/redirect/google",
-      scope: ["profile"],
+      scope: ["profile", "email"],
     },
     async function (issuer, profile, cb) {
       try {
+        console.log(`THEIR ENTIRE PROFILE=======`, profile.emails[0].value);
         // Check if the user already exists in the federated_credentials table
         const existingCredential = await FederatedCredential.findOne({
           where: { provider: issuer, subject: profile.id },
