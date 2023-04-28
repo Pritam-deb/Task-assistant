@@ -15,9 +15,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      username: {
+      userEmail: {
         type: DataTypes.STRING,
         unique: true,
+        allowNull: true,
+        validate: {
+          isEmail: {
+            msg: "You must add a valid email address",
+          },
+        },
       },
       password: {
         type: DataTypes.STRING,

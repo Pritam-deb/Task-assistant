@@ -51,7 +51,10 @@ passport.use(
 
         if (!existingCredential) {
           // If not, create a new user and federated credential
-          const newUser = await User.create({ name: profile.displayName });
+          const newUser = await User.create({
+            name: profile.displayName,
+            userEmail: profile.emails[0].value,
+          });
           // console.log(`NEW USER IS ===> `, newUser.uuid);
           try {
             const newCredential = await FederatedCredential.create({
