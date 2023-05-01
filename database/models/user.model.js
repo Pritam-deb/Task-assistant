@@ -1,19 +1,15 @@
 "use strict";
-const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate({ Todo }) {
-      this.hasMany(Todo, { foreignKey: "userId", as: "Todo" });
-    }
-  }
-  User.init(
+  const User = sequelize.define(
+    "user",
     {
       uuid: {
         type: DataTypes.INTEGER,
         // defaultValue: DataTypes.UUIDV4,
         autoIncrement: true,
-        allowNull: false,
         primaryKey: true,
+        allowNull: false,
       },
       username: {
         type: DataTypes.STRING,
@@ -28,9 +24,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      sequelize,
-      modelName: "user",
     }
   );
+  User.associate = (models) => {
+    User.hasMany(models.Todo, {
+      foreignKey: "userId",
+      sourceKey: "uuid",
+      onDelete: "CASCADE",
+    });
+  };
+
   return User;
 };
