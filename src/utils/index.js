@@ -53,12 +53,12 @@ const checkTodosDueInThreeDays = async () => {
         [Op.lte]: threeDaysFromNow,
       },
     },
-    // include: [
-    //   {
-    //     model: User,
-    //     attributes: ["userEmail"],
-    //   },
-    // ],
+    include: [
+      {
+        model: db.users,
+        attributes: ["userEmail"],
+      },
+    ],
   });
   console.log(`TODO WITHIN DUE DATE===>`, todos);
   // if (todos) {
