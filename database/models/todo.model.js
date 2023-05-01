@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { message: "Should not be Empty" },
         },
       },
+      dueDate: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       isCompleted: {
         type: DataTypes.STRING, // corrected data type
         allowNull: false,

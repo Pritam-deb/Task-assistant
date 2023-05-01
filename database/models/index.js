@@ -32,7 +32,7 @@ db.sessions = require("./sessions.model")(sequelize, DataTypes);
 
 db.users.hasMany(db.todos, {
   foreignKey: "userId",
-  sourceKey: "uuid",
+  sourceKey: "userId",
   onDelete: "CASCADE",
 });
 
