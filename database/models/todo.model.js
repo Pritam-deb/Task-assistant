@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Todo.associate = (models) => {
-    console.log(`MODELS===>`, models);
     Todo.belongsTo(models.user, {
       foreignKey: "userId",
       targetKey: "uuid",
