@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const cron = require("node-cron");
 const { Op } = require("sequelize");
 const { JWT_SECRET } = require("../../database/config");
 
@@ -60,11 +61,9 @@ const checkTodosDueInThreeDays = async () => {
       },
     ],
   });
-  // console.log(`TODO WITHIN DUE DATE===>`, todos);
+
   if (todos) {
     todos.forEach((todo) => {
-      console.log(`TO-DO TITLE============>`, todo.title);
-      console.log(`TO-DO EMAIL============>`, todo.user.userEmail);
       const subject = `Reminder: Your todo "${todo.title}" is due in 3 days`;
       const text = `Your todo "${
         todo.title
@@ -73,5 +72,10 @@ const checkTodosDueInThreeDays = async () => {
     });
   }
 };
+
+//scheduler I dont know from where it should work???from where should i call it??
+cron.schedule("0 9 * * *", () => {
+  checkTodosDueInThreeDays();
+});
 
 module.exports = { hashPswd, accessToken, checkTodosDueInThreeDays };
