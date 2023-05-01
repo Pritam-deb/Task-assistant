@@ -22,7 +22,7 @@ router.get(
 
 passport.serializeUser(function (user, cb) {
   process.nextTick(function () {
-    cb(null, { uuid: user.id, username: user.username, name: user.name });
+    cb(null, { userId: user.id, username: user.username, name: user.name });
   });
 });
 
@@ -58,7 +58,7 @@ passport.use(
           // console.log(`NEW USER IS ===> `, newUser.uuid);
           try {
             const newCredential = await FederatedCredential.create({
-              user_id: newUser.uuid,
+              user_id: newUser.userId,
               provider: issuer,
               subject: profile.id,
             });
@@ -68,7 +68,7 @@ passport.use(
 
           // Create a user object to be returned to Passport
           const user = {
-            id: newUser.uuid,
+            id: newUser.userId,
             name: newUser.name,
           };
 
@@ -76,12 +76,12 @@ passport.use(
         } else {
           // If user already exists, fetch the user from the users table
           const existingUser = await User.findOne({
-            where: { uuid: existingCredential.user_id },
+            where: { userId: existingCredential.user_id },
           });
 
           // Create a user object to be returned to Passport
           const user = {
-            id: existingUser.uuid,
+            id: existingUser.userId,
             name: existingUser.name,
           };
 

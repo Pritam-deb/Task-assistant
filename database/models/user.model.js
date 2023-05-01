@@ -3,12 +3,12 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate({ Todo }) {
-      this.hasMany(Todo, { foreignKey: "userId", as: "Todo" });
+      this.hasMany(Todo, { foreignKey: "userId" });
     }
   }
   User.init(
     {
-      uuid: {
+      userId: {
         type: DataTypes.INTEGER,
         // defaultValue: DataTypes.UUIDV4,
         autoIncrement: true,
