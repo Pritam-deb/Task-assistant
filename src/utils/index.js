@@ -24,7 +24,7 @@ const sendEmail = async (to, subject, body) => {
     service: "gmail",
     auth: {
       user: "pritamdebnath297@gmail.com",
-      pass: "iL0veAyaka",
+      pass: "pyex ecna ipug yeke",
     },
   });
   let mailOptions = {
@@ -46,7 +46,7 @@ const checkTodosDueInThreeDays = async () => {
   const threeDaysFromNow = new Date(
     new Date().getTime() + 3 * 24 * 60 * 60 * 1000
   );
-  console.log(`DATE TO SEARCH:=====>`, threeDaysFromNow);
+
   const todos = await Todo.findAll({
     where: {
       dueDate: {
@@ -60,16 +60,18 @@ const checkTodosDueInThreeDays = async () => {
       },
     ],
   });
-  console.log(`TODO WITHIN DUE DATE===>`, todos);
-  // if (todos) {
-  //   todos.forEach((todo) => {
-  //     const subject = `Reminder: Your todo "${todo.title}" is due in 3 days`;
-  //     const text = `Your todo "${
-  //       todo.title
-  //     }" is due on ${todo.dueDate.toDateString()}. Don't forget to complete it!`;
-  //     sendEmail(todo.User.userEmail, subject, text);
-  //   });
-  // }
+  // console.log(`TODO WITHIN DUE DATE===>`, todos);
+  if (todos) {
+    todos.forEach((todo) => {
+      console.log(`TO-DO TITLE============>`, todo.title);
+      console.log(`TO-DO EMAIL============>`, todo.user.userEmail);
+      const subject = `Reminder: Your todo "${todo.title}" is due in 3 days`;
+      const text = `Your todo "${
+        todo.title
+      }" is due on ${todo.dueDate.toDateString()}. Don't forget to complete it!`;
+      sendEmail(todo.user.userEmail, subject, text);
+    });
+  }
 };
 
 module.exports = { hashPswd, accessToken, checkTodosDueInThreeDays };
