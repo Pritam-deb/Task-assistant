@@ -16,6 +16,7 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
+sequelize;
 
 const db = {};
 db.Sequelize = Sequelize;
@@ -28,5 +29,11 @@ db.federated_credentials = require("./federated_credentials")(
   DataTypes
 );
 db.sessions = require("./sessions.model")(sequelize, DataTypes);
+
+db.users.hasMany(db.todos, {
+  foreignKey: "userId",
+  sourceKey: "uuid",
+  onDelete: "CASCADE",
+});
 
 module.exports = db;

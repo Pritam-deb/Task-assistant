@@ -1,20 +1,13 @@
 "use strict";
-const { Model } = require("sequelize");
-module.exports = (sequelize, DataTypes) => {
-  class Todo extends Model {
-    static associate({ User }) {
-      this.belongsTo(User, { foreignKey: "userId" });
-    }
 
-    toJSON() {
-      return { ...this.get(), userId: undefined };
-    }
-  }
-  Todo.init(
+module.exports = (sequelize, DataTypes) => {
+  const Todo = sequelize.define(
+    "Todo",
     {
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        // autoIncrement: true,
         allowNull: false,
         primaryKey: true,
       },
@@ -29,19 +22,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING, // corrected data type
         allowNull: false,
       },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      dueDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
     },
     {
-      sequelize,
-      modelName: "Todo",
+      timestamps: true,
     }
   );
+  Todo.associate = (models) => {
+    Todo.belongsTo(models.user, {
+      foreignKey: "userId",
+      targetKey: "uuid",
+    });
+  };
+
   return Todo;
 };
