@@ -29,7 +29,7 @@ app.use(
   })
 );
 app.use(passport.authenticate("session"));
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: true }).then(() => {
   console.log("DB has been resynced!");
 });
 router(app);

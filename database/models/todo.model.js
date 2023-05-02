@@ -26,9 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING, // corrected data type
         allowNull: false,
       },
+      deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+      },
     },
     {
       timestamps: true,
+      paranoid: true,
     }
   );
   Todo.associate = (models) => {
