@@ -36,8 +36,8 @@ db.sequelize.sync({ force: false }).then(() => {
 });
 router(app);
 
-cron.schedule("0 9 * * *", async () => {
-  await checkTodosDueInThreeDays();
+cron.schedule("00 11 * * *", () => {
+  checkTodosDueInThreeDays();
 });
 
 app.listen(PORT, () => {
