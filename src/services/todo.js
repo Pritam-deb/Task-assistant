@@ -1,12 +1,12 @@
 const db = require("../../database/models");
-const { checkTodosDueInThreeDays } = require("../utils");
+// const { checkTodosDueInThreeDays } = require("../utils");
 
 const User = db.users;
 const Todo = db.todos;
 
 const getTodo = async (request, response) => {
   const userId = request.user.userId;
-  await checkTodosDueInThreeDays();
+  // await checkTodosDueInThreeDays();
   await Todo.findAll({ where: { userId } })
     .then((data) => response.send(data))
     .catch((err) => response.status(400).send(err));
