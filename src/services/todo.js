@@ -1,19 +1,26 @@
 const db = require("../../database/models");
+// const { checkTodosDueInThreeDays } = require("../utils");
 
 const User = db.users;
 const Todo = db.todos;
 
 const getTodo = async (request, response) => {
-  const userId = request.user.uuid;
+  const userId = request.user.userId;
+  // await checkTodosDueInThreeDays();
   await Todo.findAll({ where: { userId } })
     .then((data) => response.send(data))
     .catch((err) => response.status(400).send(err));
 };
 
 const createTodo = async (request, response) => {
-  const { title, isCompleted } = request.body;
-  const userId = request.user.uuid;
-  const user = await User.findOne({ where: { uuid: userId } });
+  var { title, isCompleted, dueDate } = request.body;
+  const [day, month, year] = dueDate.split("-");
+  const dateObj = new Date(`20${year}`, month - 1, day);
+  const isoDate = dateObj.toISOString();
+  dueDate = new Date(isoDate);
+  const userId = request.user.userId;
+  console.log(`USER TO CREATE TODO`, request.user);
+  const user = await User.findOne({ where: { userId: userId } });
   if (!user) {
     return response.status(404).send({ message: "User not found" });
   }
@@ -21,6 +28,7 @@ const createTodo = async (request, response) => {
     title,
     isCompleted,
     userId,
+    dueDate,
   };
   await Todo.create(newTodo)
     .then((data) => response.send(data))
@@ -28,7 +36,7 @@ const createTodo = async (request, response) => {
 };
 
 const deleteTodo = async (request, response) => {
-  const userId = request.user.uuid;
+  const userId = request.user.userId;
   const { uuid } = request.params;
   //check here to see if the authenticated user deleting is their own todo
   const todo = await Todo.findOne({ where: { uuid: uuid } });
@@ -48,7 +56,7 @@ const updateTodo = async (request, response) => {
   const { isCompleted } = request.body;
   //check here to see if the authenticated user updating is their own todo
   const todo = await Todo.findOne({ where: { uuid } });
-  const userId = request.user.uuid;
+  const userId = request.user.userId;
   if (userId != todo.userId) {
     return response.status(404).send({
       message: "THIS USER IS NOT ALLOWED to make changes in this Todo",

@@ -33,7 +33,7 @@ const requireGoogleAuth = async (request, response, next) => {
     const userData = currentUser[0].dataValues;
     const parsedData = JSON.parse(userData.data);
     const googleUser = {
-      uuid: parsedData.passport.user.uuid,
+      userId: parsedData.passport.user.userId,
       username: parsedData.passport.user.name,
     };
     request.user = googleUser;

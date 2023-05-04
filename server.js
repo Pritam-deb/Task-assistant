@@ -6,6 +6,8 @@ const app = express();
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const passport = require("passport");
+const { checkTodosDueInThreeDays } = require("./src/utils");
+const cron = require("node-cron");
 
 const PORT = 8080;
 
@@ -29,10 +31,14 @@ app.use(
   })
 );
 app.use(passport.authenticate("session"));
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("DB has been resynced!");
 });
 router(app);
+
+cron.schedule("00 11 * * *", () => {
+  checkTodosDueInThreeDays();
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);

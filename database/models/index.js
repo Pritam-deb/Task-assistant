@@ -23,7 +23,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require("./user.model")(sequelize, DataTypes);
-db.todos = require("./todo.model")(sequelize, DataTypes);
+db.todos = require("./todo.model")(sequelize, DataTypes, db);
 db.federated_credentials = require("./federated_credentials")(
   sequelize,
   DataTypes
@@ -32,8 +32,13 @@ db.sessions = require("./sessions.model")(sequelize, DataTypes);
 
 db.users.hasMany(db.todos, {
   foreignKey: "userId",
-  sourceKey: "uuid",
+  sourceKey: "userId",
   onDelete: "CASCADE",
+});
+
+db.todos.belongsTo(db.users, {
+  foreignKey: "userId",
+  targetKey: "userId",
 });
 
 module.exports = db;
