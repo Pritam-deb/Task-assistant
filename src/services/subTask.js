@@ -32,13 +32,18 @@ const updateSubTask = async (request, response) => {
   const { isCompleted } = request.body;
   const subTask = await SubTask.findOne({ where: { subTaskID } });
   const userId = request.user.userId;
+  const currentTodo = await Todo.findAll({
+    where: { uuid: subTask.dataValues.todoID },
+  });
 
   //check here to see if the authenticated user updating is their own sub-tasks
-  // if (userId != todo.userId) {
-  //   return response.status(404).send({
-  //     message: "THIS USER IS NOT ALLOWED to make changes in this Todo",
-  //   });
-  // }
+  if (userId != currentTodo[0].dataValues.userId) {
+    return response.status(404).send({
+      message: "THIS USER IS NOT ALLOWED to make changes in this Todo",
+    });
+  } else {
+    console.log(`SUBTASK STATUS UPDATED SUCCESSFULLY!!`);
+  }
   subTask.isCompleted = isCompleted;
   await subTask.save();
   response.send(subTask);
