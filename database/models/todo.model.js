@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       isCompleted: {
-        type: DataTypes.STRING, // corrected data type
+        type: DataTypes.BOOLEAN, // corrected data type
         allowNull: false,
       },
       deletedAt: {
