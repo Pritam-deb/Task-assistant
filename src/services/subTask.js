@@ -12,8 +12,6 @@ const getSubTask = async (request, response) => {
 const createSubTask = async (request, response) => {
   var { description, priority, isCompleted } = request.body;
   var todoID = request.params.uuid;
-  console.log(`UUID OF TASK=====>`, todoID);
-
   const todo = await Todo.findOne({ where: { uuid: todoID } });
   if (!todo) {
     return response.status(404).send({ message: "Todo not found" });
@@ -34,8 +32,13 @@ const updateSubTask = async (request, response) => {
   const { isCompleted } = request.body;
   const subTask = await SubTask.findOne({ where: { subTaskID } });
   const userId = request.user.userId;
-  //check here to see if the authenticated user updating is their own sub-tasks
 
+  //check here to see if the authenticated user updating is their own sub-tasks
+  // if (userId != todo.userId) {
+  //   return response.status(404).send({
+  //     message: "THIS USER IS NOT ALLOWED to make changes in this Todo",
+  //   });
+  // }
   subTask.isCompleted = isCompleted;
   await subTask.save();
   response.send(subTask);

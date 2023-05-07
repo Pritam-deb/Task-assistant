@@ -1,15 +1,27 @@
 const db = require("../../database/models");
-// const { checkTodosDueInThreeDays } = require("../utils");
 
 const User = db.users;
 const Todo = db.todos;
+const SubTask = db.subTasks;
 
 const getTodo = async (request, response) => {
+  const grandTask = [];
   const userId = request.user.userId;
-  // await checkTodosDueInThreeDays();
-  await Todo.findAll({ where: { userId } })
-    .then((data) => response.send(data))
-    .catch((err) => response.status(400).send(err));
+  const usersTodo = await Todo.findAll({ where: { userId } });
+  await Promise.all(
+    usersTodo.map(async (singleTodo) => {
+      const userSubtasks = await SubTask.findAll({
+        where: { todoID: singleTodo.dataValues.uuid },
+      });
+      const x = [];
+      userSubtasks.forEach((singleSubTask) => {
+        x.push(singleSubTask.dataValues);
+      });
+      singleTodo.dataValues.subTasks = x;
+      grandTask.push(singleTodo.dataValues);
+    })
+  );
+  response.send(usersTodo);
 };
 
 const createTodo = async (request, response) => {
