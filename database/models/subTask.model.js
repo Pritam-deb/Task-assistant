@@ -1,29 +1,28 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-  const Todo = sequelize.define(
-    "Todo",
+  const subTask = sequelize.define(
+    "subTask",
     {
-      uuid: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        // autoIncrement: true,
-        allowNull: false,
+      subTaskID: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
-      title: {
+      description: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: { message: "Should not be Empty" },
         },
       },
-      dueDate: {
-        type: DataTypes.DATE,
-        allowNull: true,
+      priority: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       isCompleted: {
-        type: DataTypes.BOOLEAN, // corrected data type
+        type: DataTypes.BOOLEAN,
         allowNull: false,
       },
       deletedAt: {
@@ -37,12 +36,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     }
   );
-  Todo.associate = (models) => {
-    Todo.belongsTo(models.user, {
-      foreignKey: "userId",
-      targetKey: "uuid",
-    });
-  };
-
-  return Todo;
+  return subTask;
 };

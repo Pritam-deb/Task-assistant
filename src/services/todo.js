@@ -1,15 +1,27 @@
 const db = require("../../database/models");
-// const { checkTodosDueInThreeDays } = require("../utils");
 
 const User = db.users;
 const Todo = db.todos;
+const SubTask = db.subTasks;
 
 const getTodo = async (request, response) => {
+  const grandTask = [];
   const userId = request.user.userId;
-  // await checkTodosDueInThreeDays();
-  await Todo.findAll({ where: { userId } })
-    .then((data) => response.send(data))
-    .catch((err) => response.status(400).send(err));
+  const usersTodo = await Todo.findAll({ where: { userId } });
+  await Promise.all(
+    usersTodo.map(async (singleTodo) => {
+      const userSubtasks = await SubTask.findAll({
+        where: { todoID: singleTodo.dataValues.uuid },
+      });
+      const x = [];
+      userSubtasks.forEach((singleSubTask) => {
+        x.push(singleSubTask.dataValues);
+      });
+      singleTodo.dataValues.subTasks = x;
+      grandTask.push(singleTodo.dataValues);
+    })
+  );
+  response.send(usersTodo);
 };
 
 const createTodo = async (request, response) => {
@@ -54,6 +66,16 @@ const deleteTodo = async (request, response) => {
 const updateTodo = async (request, response) => {
   const { uuid } = request.params;
   const { isCompleted } = request.body;
+  //if todo isComplete is set to TRUE, all the sub tasks related to it also becomes true.
+  var subTasks = [];
+  if (isCompleted == true) {
+    subTasks = await SubTask.findAll({ where: { todoID: uuid } });
+    subTasks.forEach(async (singleSubTask) => {
+      singleSubTask.isCompleted = true;
+      await singleSubTask.save();
+    });
+  }
+
   //check here to see if the authenticated user updating is their own todo
   const todo = await Todo.findOne({ where: { uuid } });
   const userId = request.user.userId;
