@@ -66,6 +66,16 @@ const deleteTodo = async (request, response) => {
 const updateTodo = async (request, response) => {
   const { uuid } = request.params;
   const { isCompleted } = request.body;
+  //if todo isComplete is set to TRUE, all the sub tasks related to it also becomes true.
+  var subTasks = [];
+  if (isCompleted == true) {
+    subTasks = await SubTask.findAll({ where: { todoID: uuid } });
+    subTasks.forEach(async (singleSubTask) => {
+      singleSubTask.isCompleted = true;
+      await singleSubTask.save();
+    });
+  }
+
   //check here to see if the authenticated user updating is their own todo
   const todo = await Todo.findOne({ where: { uuid } });
   const userId = request.user.userId;
