@@ -11,6 +11,14 @@ const getSubTask = async (request, response) => {
 
 const createSubTask = async (request, response) => {
   var { description, priority, isCompleted } = request.body;
+  if (
+    typeof description !== "string" ||
+    typeof priority !== "string" ||
+    typeof isCompleted !== "boolean"
+  ) {
+    return response.status(400).json({ error: "Invalid data type" });
+  }
+
   var todoID = request.params.uuid;
   const todo = await Todo.findOne({ where: { uuid: todoID } });
   if (!todo) {
@@ -30,6 +38,9 @@ const createSubTask = async (request, response) => {
 const updateSubTask = async (request, response) => {
   const { subTaskID } = request.params;
   const { isCompleted } = request.body;
+  if (typeof isCompleted !== "boolean") {
+    return response.status(400).json({ error: "Invalid data type" });
+  }
   const subTask = await SubTask.findOne({ where: { subTaskID } });
   const userId = request.user.userId;
   const currentTodo = await Todo.findAll({
