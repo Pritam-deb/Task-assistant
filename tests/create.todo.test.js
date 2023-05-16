@@ -57,7 +57,7 @@ describe("createTodo function", () => {
 
     // Check that the todo was created with the correct data
     const expectedDueDate = new Date("2023-05-15").toISOString();
-    console.log(`DUEDATE===>`, new Date(expectedDueDate));
+
     expect(db.todos.create).toHaveBeenCalledWith({
       title: requestBody.title,
       isCompleted: requestBody.isCompleted,
