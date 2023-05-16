@@ -51,16 +51,19 @@ describe("updateTodo function", () => {
 
     // Check the todo update
     const updatedTodo = Todo.findOne.mock.results[0].value;
-    expect(updatedTodo.isCompleted).toBe(isCompleted);
 
-    // Check the subtask updates
-    expect(updatedTodo.save).toHaveBeenCalled();
+    updatedTodo.then(function (todo) {
+      expect(todo.isCompleted).toBe(isCompleted);
+      // Check the subtask updates
+      expect(todo.save).toHaveBeenCalled(); // Updated expectation
+    });
+
     const updatedSubtasks = SubTask.findAll.mock.results[0].value;
-    updatedSubtasks.forEach((subtask) => {
-      expect(subtask.isCompleted).toBe(isCompleted);
-      expect(subtask.save).toHaveBeenCalled();
+    updatedSubtasks.then(function (subtask) {
+      subtask.forEach((ST) => {
+        expect(ST.isCompleted).toBe(isCompleted);
+        expect(ST.save).toHaveBeenCalled();
+      });
     });
   });
-
-  // Add more test cases if needed
 });
