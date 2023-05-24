@@ -1,7 +1,5 @@
 const bcrypt = require("bcrypt");
 
-export const pswd = [];
-
 const hashPassword = (password) =>
   bcrypt
     .hash(password, 12)
