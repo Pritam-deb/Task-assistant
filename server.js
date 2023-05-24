@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 const db = require("./database/models");
 const router = require("./src/routes");
 const app = express();
@@ -14,7 +15,7 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 
 app.use(
@@ -30,6 +31,7 @@ app.use(
     }),
   })
 );
+
 app.use(passport.authenticate("session"));
 db.sequelize.sync({ force: false }).then(() => {
   console.log("DB has been resynced!");

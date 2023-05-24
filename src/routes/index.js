@@ -12,7 +12,7 @@ const routes = (app) => {
   });
   app.use("/", router);
 };
-router.use("/api", googleRoutes);
+router.use("/", googleRoutes);
 router.use("/api", authRoutes);
 router.use("/api", requireGoogleAuth, protectedRoutes);
 
